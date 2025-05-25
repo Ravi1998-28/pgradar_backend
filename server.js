@@ -1,12 +1,12 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-require('dotenv').config();
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+dotenv.config();
 
-// const pgRoutes = require('./routes/pgRoutes');
-const userRoutes = require('./routes/userRoutes');
-// const errorHandler = require('./middleware/errorHandler');
-const connectDB = require('./config/db');
+import userRoutes from './routes/userRoutes.js';
+// import pgRoutes from './routes/pgRoutes.js';
+// import errorHandler from './middleware/errorHandler.js';
+import connectDB from './config/db.js';
 
 const app = express();
 connectDB();
