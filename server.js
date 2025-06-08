@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import userRoutes from './routes/userRoutes.js';
-// import pgRoutes from './routes/pgRoutes.js';
+import pgRoutes from './routes/pgRoutes.js';
 // import errorHandler from './middleware/errorHandler.js';
 import connectDB from './config/db.js';
 
@@ -14,7 +14,7 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
-// app.use('/api/pgs', pgRoutes);
+app.use('/api/pgs', pgRoutes);
 app.use('/api/users', userRoutes);
 
 //app.use(errorHandler);
