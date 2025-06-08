@@ -75,3 +75,34 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(404).json({ message: 'User with this email does not exist' });
+
+    // Generate reset token
+    const resetToken = crypto.randomBytes(20).toString('hex');
+    const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+    // Set token and expiry on user
+    user.resetPasswordToken = hashedToken;
+    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+    await user.save();
+
+    // You would email this link in production
+    const resetLink = `${req.protocol}://${req.get('host')}/api/users/reset-password/${resetToken}`;
+
+    res.status(200).json({
+      message: 'Reset link generated',
+      resetLink, // remove this in production and send via email
+    });
+
+  } catch (error) {
+    console.error('Forgot Password Error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
